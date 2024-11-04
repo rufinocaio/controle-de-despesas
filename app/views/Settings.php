@@ -11,7 +11,7 @@
         </div>
         <div class="mb-4">
             <label class="block text-gray-700" for="email">Senha</label>
-            <input type="password" id="password" name="passowrd" class="border border-gray-300 p-2 w-full" value="<?php echo $user['password']; ?>" required>
+            <input type="password" id="password" name="passowrd" class="border border-gray-300 p-2 w-full" value="" required>
         </div>
         <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded">Salvar</button>
     </form>

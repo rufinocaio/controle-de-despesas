@@ -21,7 +21,7 @@ class AuthController {
             $user = $userModel->findByEmail($email);
 
             if ($user && password_verify($password, $user['password'])) {
-                session_start();
+                require_once '../app/session.php';
                 $_SESSION['user_id'] = $user['id'];
                 echo $_SESSION['user_id'];
                 header("Location: /public/index.php?url=dashboard");

@@ -2,7 +2,7 @@
 
 require_once '../app/models/Expense.model.php';
 require_once '../app/middleware/AuthMiddleware.php';
-
+require_once '../app/session.php';
 class ExpenseController {
     public function index() {
         AuthMiddleware::check(); // Verifica se o usuário está logado
