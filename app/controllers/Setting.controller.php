@@ -13,7 +13,8 @@ class SettingsController {
         }
 
         $userModel = new UserModel();
-        $user = $userModel->findByEmail($_SESSION['user_id']);
+        startSession();
+        $user = $userModel->findById($_SESSION['user_id']);
 
         $view = '../views/settings.php';
         require '../views/layout.php';

@@ -7,40 +7,40 @@ class ExpenseModel {
         $this->db = Database::getInstance()->getConnection();
     }
 
-    public function deleteSharedExpenses($expenseId) {
-        $stmt = $this->db->prepare("DELETE FROM shared_expenses WHERE expense_id = :expense_id");
-        return $stmt->execute(['expense_id' => $expenseId]);
+    public function create($userId, $amount, $type_id, $description, $date, $sharedWithUserIds, $participants) {
+        $stmt = $this->db->prepare("INSERT INTO expenses (user_id, amount, expense_type_id, description, date, participants_number) VALUES (:user_id, :amount, :type_id, :description, :date, :participants)");
+        $stmt->execute([
+            'user_id' => $userId,
+            'amount' => floatval(number_format($amount, 2, '.', ',')),
+            'type_id' => $type_id,
+            'description' => $description,
+            'date' => $date,
+            'participants' => $participants
+        ]);
+        $expenseId = $this->db->lastInsertId();
+
+        if ($participants > 1) {
+            $shared_amount = floatval(number_format($amount / $participants, 2, '.', ','));
+            foreach ($sharedWithUserIds as $sharedWithUserId) {
+                $this->createSharedExpense($expenseId, $sharedWithUserId, $shared_amount);
+            }
+        }
+
+        return $expenseId;
     }
 
     public function createSharedExpense($expenseId, $sharedWithUserId, $amountDue) {
-        $stmt = $this->db->prepare("INSERT INTO      (expense_id, shared_with_user_id, amount_due) VALUES (:expense_id, :shared_with_user_id, :amount_due)");
+        $stmt = $this->db->prepare("INSERT INTO shared_expenses (expense_id, user_id, amount_due) VALUES (:expense_id, :user_id, :amount_due)");
         return $stmt->execute([
             'expense_id' => $expenseId,
-            'shared_with_user_id' => $sharedWithUserId,
+            'user_id' => $sharedWithUserId,
             'amount_due' => $amountDue
         ]);
     }
 
-    public function create($userId, $amount, $type_id, $description, $date, $shared_with, $participants) {
-        $stmt = $this->db->prepare("INSERT INTO expenses (user_id, amount, expense_type_id, description, date, shared_with, participants) VALUES (:user_id, :amount, :type_id, :description, :date, :shared_with, :participants)");
-        $stmt->execute([
-            'user_id' => $userId,
-            'amount' => $amount,
-            'type_id' => $type_id,
-            'description' => $description,
-            'date' => $date,
-            'shared_with' => $shared_with,
-            'participants' => $participants
-        ]);
-        if ($participants > 1) {
-            $participants_id = explode(',', $shared_with);
-            
-            foreach ($participants_id as $participant_id) {
-                $this->createSharedExpense($this->db->lastInsertId(), $participants_id, $amount / $participants);
-            }
-            
-        }
-        return $this->db->lastInsertId();
+    public function deleteSharedExpenses($expenseId) {
+        $stmt = $this->db->prepare("DELETE FROM shared_expenses WHERE expense_id = :expense_id");
+        return $stmt->execute(['expense_id' => $expenseId]);
     }
 
     public function getAllByUserId($userId) {
@@ -56,12 +56,10 @@ class ExpenseModel {
 
     public function getSharedParticipants($expenseId) {
         $stmt = $this->db->prepare("
-            SELECT users.name, shared_expense_participants.amount_due 
+            SELECT users.id, users.name, shared_expense_participants.amount_due 
             FROM shared_expense_participants 
             JOIN users ON shared_expense_participants.user_id = users.id 
-            WHERE shared_expense_participants.expense_id = (
-                SELECT id FROM shared_expense_participants WHERE expense_id = :expense_id
-            )
+            WHERE shared_expense_participants.expense_id = :expense_id
         ");
         $stmt->execute(['expense_id' => $expenseId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -87,5 +85,4 @@ class ExpenseModel {
         $stmt = $this->db->prepare("DELETE FROM expenses WHERE id = :id");
         return $stmt->execute(['id' => $id]);
     }
-
 }
