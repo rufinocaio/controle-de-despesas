@@ -51,19 +51,15 @@ class ExpenseController {
         AuthMiddleware::check(); // Verifica se o usuário está logado
         $expenseModel = new ExpenseModel();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['id'];
+            $id = $_POST['EditId'];
             $amount = $_POST['amount'];
             $type_id = $_POST['type_id'];
             $description = $_POST['description'];
             $date = $_POST['date'];
             $sharedWithUserIds = $_POST['shared_with'] ?? [];
             $participants = count($sharedWithUserIds) + 1; // Conta o usuário atual
-            $expenseModel->update($id, $amount, $type_id, $description, $date);
             $expenseModel->deleteSharedExpenses($id);
-            foreach ($sharedWithUserIds as $sharedWithUserId) {
-                $sharedAmount = $amount / $participants;
-                $expenseModel->createSharedExpense($id, $sharedWithUserId, $sharedAmount);
-            }
+            $expenseModel->update($id, $amount, $type_id, $description, $date, $sharedWithUserIds, $participants);
             header("Location: /public/index.php?url=editar-despesas");
             exit;
         }

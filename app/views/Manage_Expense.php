@@ -45,15 +45,15 @@
 <div id="editModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
     <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
         <h2 class="text-2xl font-bold mb-6 text-center">Editar Despesa</h2>
-        <form id="editForm" action="/public/index.php?url=editar-despesa" method="POST">
-            <input type="hidden" id="editId" name="id">
+        <form id="editForm" action="/public/index.php?url=salvar-despesa" method="POST">
+            <input type="hidden" id="EditId" name="EditId">
             <div class="mb-4">
                 <label class="block text-gray-700" for="editAmount">Valor</label>
-                <input type="number" id="editAmount" name="amount" class="border border-gray-300 p-2 w-full" required>
+                <input type="number" id="amount" name="amount" class="border border-gray-300 p-2 w-full" required>
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700" for="editTypeId">Tipo de Despesa</label>
-                <select id="editTypeId" name="type_id" class="border border-gray-300 p-2 w-full" required>
+                <select id="type_id" name="type_id" class="border border-gray-300 p-2 w-full" required>
                     <?php foreach ($expenseTypes as $type): ?>
                         <option value="<?php echo $type['id']; ?>"><?php echo $type['name']; ?></option>
                     <?php endforeach; ?>
@@ -61,18 +61,20 @@
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700" for="editDate">Data</label>
-                <input type="date" id="editDate" name="date" class="border border-gray-300 p-2 w-full" required>
+                <input type="date" id="date" name="date" class="border border-gray-300 p-2 w-full" required>
             </div>
             <div class="mb-6">
                 <label class="block text-gray-700" for="editDescription">Descrição</label>
-                <textarea id="editDescription" name="description" class="border border-gray-300 p-2 w-full" required></textarea>
+                <textarea id="description" name="description" class="border border-gray-300 p-2 w-full" required></textarea>
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700" for="editSharedWith">Compartilhar com:</label>
-                <select id="editSharedWith" name="shared_with[]" class="border border-gray-300 p-2 w-full" multiple>
+                <select id="shared_with" name="shared_with[]" class="border border-gray-300 p-2 w-full" multiple>
                     <?php 
                     $users = $expenseModel->getAllUsers();
-                    foreach ($users as $user): ?>
+                    foreach ($users as $user):
+                        startSession(); 
+                        if ($user['id'] != $_SESSION['user_id'])?>
                         <option value="<?php echo $user['id']; ?>"><?php echo $user['name']; ?></option>
                     <?php endforeach; ?>
                 </select>
@@ -99,12 +101,12 @@
 
 <script>
     function openEditModal(expense) {
-        document.getElementById('editId').value = expense.id;
-        document.getElementById('editAmount').value = expense.amount;
-        document.getElementById('editTypeId').value = expense.type_id;
-        document.getElementById('editDate').value = expense.date;
-        document.getElementById('editDescription').value = expense.description;
-        document.getElementById('editSharedWith').value = expense.shared_with.map(user => user.id);
+        document.getElementById('EditId').value = expense.id;
+        document.getElementById('amount').value = expense.amount;
+        document.getElementById('type_id').value = expense.type_id;
+        document.getElementById('date').value = expense.date;
+        document.getElementById('description').value = expense.description;
+        document.getElementById('shared_with').value = expense.shared_with.map(user => user.id);
         document.getElementById('editModal').classList.remove('hidden');
     }
 

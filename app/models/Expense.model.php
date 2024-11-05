@@ -30,7 +30,7 @@ class ExpenseModel {
     }
 
     public function createSharedExpense($expenseId, $sharedWithUserId, $amountDue) {
-        $stmt = $this->db->prepare("INSERT INTO shared_expenses (expense_id, user_id, amount_due) VALUES (:expense_id, :user_id, :amount_due)");
+        $stmt = $this->db->prepare("INSERT INTO shared_expense_participants (expense_id, user_id, amount_due) VALUES (:expense_id, :user_id, :amount_due)");
         return $stmt->execute([
             'expense_id' => $expenseId,
             'user_id' => $sharedWithUserId,
@@ -39,7 +39,7 @@ class ExpenseModel {
     }
 
     public function deleteSharedExpenses($expenseId) {
-        $stmt = $this->db->prepare("DELETE FROM shared_expenses WHERE expense_id = :expense_id");
+        $stmt = $this->db->prepare("DELETE FROM shared_expense_participants WHERE expense_id = :expense_id");
         return $stmt->execute(['expense_id' => $expenseId]);
     }
 
@@ -70,15 +70,23 @@ class ExpenseModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function update($id, $amount, $type_id, $description, $date) {
-        $stmt = $this->db->prepare("UPDATE expenses SET amount = :amount, expense_type_id = :type_id, description = :description, date = :date WHERE id = :id");
-        return $stmt->execute([
+    public function update($id, $amount, $type_id, $description, $date, $sharedWithUserIds, $participants) {
+        $stmt = $this->db->prepare("UPDATE expenses SET amount = :amount, expense_type_id = :type_id, description = :description, date = :date, participants_number = :participants WHERE id = :id");
+        $stmt->execute([
             'id' => $id,
-            'amount' => $amount,
+            'amount' => floatval(number_format($amount, 2, '.', ',')),
             'type_id' => $type_id,
             'description' => $description,
-            'date' => $date
+            'date' => $date,
+            'participants' => $participants
         ]);
+
+        if ($participants > 1) {
+            $shared_amount = floatval(number_format($amount / $participants, 2, '.', ','));
+            foreach ($sharedWithUserIds as $sharedWithUserId) {
+                $this->createSharedExpense($id, $sharedWithUserId, $shared_amount);
+            }
+        }
     }
 
     public function delete($id) {

@@ -29,6 +29,13 @@
                      foreach ($users as $user): ?>
                     <option value="<?php echo $user['id']; ?>"><?php echo $user['name']; ?></option>
                 <?php endforeach; ?>
+                <?php 
+                $users = $expenseModel->getAllUsers();
+                foreach ($users as $user):
+                    startSession(); 
+                    if ($user['id'] != $_SESSION['user_id'])?>
+                        <option value="<?php echo $user['id']; ?>"><?php echo $user['name']; ?></option>
+                <?php endforeach; ?>
             </select>
             <small class="text-gray-600">Segure Ctrl (ou Cmd) para selecionar múltiplos usuários.</small>
         </div>

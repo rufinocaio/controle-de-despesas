@@ -22,6 +22,10 @@ if (isset($_GET['url'])) {
             $controller = 'Expense';
             $action = 'manageExpenses';
             break;
+        case 'salvar-despesa':
+            $controller = 'Expense';
+            $action = 'edit';
+            break;
         case 'deletar-despesa':
             $controller = 'Expense';
             $action = 'deleteExpense';
