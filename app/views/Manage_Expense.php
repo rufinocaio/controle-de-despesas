@@ -45,7 +45,7 @@
 <div id="editModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
     <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
         <h2 class="text-2xl font-bold mb-6 text-center">Editar Despesa</h2>
-        <form id="editForm" action="/public/index.php?url=adicionar-despesa" method="POST">
+        <form id="editForm" action="/public/index.php?url=editar-despesa" method="POST">
             <input type="hidden" id="editId" name="id">
             <div class="mb-4">
                 <label class="block text-gray-700" for="editAmount">Valor</label>
