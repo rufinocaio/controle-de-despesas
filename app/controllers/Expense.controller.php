@@ -12,6 +12,7 @@ class ExpenseController {
     }
 
     public function create() {
+        startSession();
         $expenseModel = new ExpenseModel();
         // Carrega os tipos de despesa para o formulário
         $expenseTypes = $expenseModel->getExpenseTypes();
