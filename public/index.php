@@ -6,6 +6,8 @@ require '../app/controllers/Expense.controller.php';
 require '../app/controllers/Dashboard.controller.php';
 require '../app/Session.php';
 
+$_USER = null;
+
 if (isset($_GET['url'])) {
     switch ($_GET['url']) {
         case 'dashboard':
@@ -21,7 +23,7 @@ if (isset($_GET['url'])) {
             $action = 'manageExpenses';
             break;
         case 'perfil':
-            $controller = 'User';
+            $controller = 'Setting';
             $action = 'settings';
             break;
         case 'logout':

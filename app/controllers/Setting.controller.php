@@ -1,5 +1,5 @@
 <?php
-class SettingsController {
+class SettingController {
     public function settings() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = $_POST['name'];
@@ -16,7 +16,7 @@ class SettingsController {
         startSession();
         $user = $userModel->findById($_SESSION['user_id']);
 
-        $view = '../views/settings.php';
-        require '../views/layout.php';
+        $view = '../app/views/settings.php';
+        require '../app/views/layout.php';
     }
 }
