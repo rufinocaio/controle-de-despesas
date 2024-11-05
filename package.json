@@ -1,0 +1,12 @@
+{
+    "name": "controle-de-despesas",
+    "version": "1.0.0",
+    "scripts": {
+      "build:css": "tailwindcss build public/css/style.css -o public/css/tailwind.css"
+    },
+    "devDependencies": {
+      "tailwindcss": "^2.2.19",
+      "autoprefixer": "^10.4.0",
+      "postcss": "^8.4.5"
+    }
+  }

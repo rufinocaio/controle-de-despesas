@@ -1,7 +1,6 @@
-<!-- app/views/add-expense.php -->
 <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
     <h2 class="text-2xl font-bold mb-6 text-center">Adicionar Despesa</h2>
-    <form action="/public/index.php?url=add-expense" method="POST">
+    <form action="/public/index.php?url=adicionar-despesa" method="POST">
         <div class="mb-4">
             <label class="block text-gray-700" for="amount">Valor</label>
             <input type="number" id="amount" name="amount" class="border border-gray-300 p-2 w-full" required>
@@ -25,8 +24,9 @@
         <div class="mb-4">
             <label class="block text-gray-700" for="shared_with">Compartilhar com:</label>
             <select id="shared_with" name="shared_with[]" class="border border-gray-300 p-2 w-full" multiple>
-                <!-- Adicionar opções de usuários disponíveis para compartilhar -->
-                <?php foreach ($users as $user): ?>
+                <?php 
+                    $users = $expenseModel->getAllUsers();
+                     foreach ($users as $user): ?>
                     <option value="<?php echo $user['id']; ?>"><?php echo $user['name']; ?></option>
                 <?php endforeach; ?>
             </select>

@@ -10,8 +10,8 @@
             <input type="email" id="email" name="email" class="border border-gray-300 p-2 w-full" value="<?php echo $user['email']; ?>" required>
         </div>
         <div class="mb-4">
-            <label class="block text-gray-700" for="email">Senha</label>
-            <input type="password" id="password" name="passowrd" class="border border-gray-300 p-2 w-full" value="" required>
+            <label class="block text-gray-700" for="password">Senha</label>
+            <input type="password" id="password" name="password" class="border border-gray-300 p-2 w-full" required>
         </div>
         <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded">Salvar</button>
     </form>

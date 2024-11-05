@@ -1,7 +1,5 @@
 <?php
 
-require_once '../app/Database.php';
-
 class UserModel {
     private $pdo;
 
@@ -10,8 +8,8 @@ class UserModel {
     }
 
     public function create($name, $email, $password) {
-        $stmt = $this->pdo->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
-        return $stmt->execute([$name, $email, $password]);
+        $stmt = $this->pdo->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)");
+        return $stmt->execute(['name' => $name, 'email' => $email, 'password' => $password]);
     }
 
     public function findByEmail($email) {

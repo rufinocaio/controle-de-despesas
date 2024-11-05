@@ -4,11 +4,7 @@ require '../app/Database.php';
 require '../app/controllers/Auth.controller.php';
 require '../app/controllers/Expense.controller.php';
 require '../app/controllers/Dashboard.controller.php';
-
-$url = isset($_GET['url']) ? explode('/', rtrim($_GET['url'], '/')) : [];
-
-$controller = 'Auth';
-$action = 'login';
+require '../app/Session.php';
 
 if (isset($_GET['url'])) {
     switch ($_GET['url']) {
@@ -16,15 +12,15 @@ if (isset($_GET['url'])) {
             $controller = 'Dashboard';
             $action = 'index';
             break;
-        case 'add-expense':
+        case 'adicionar-despesa':
             $controller = 'Expense';
             $action = 'create';
             break;
-        case 'manage-expenses':
+        case 'editar-despesas':
             $controller = 'Expense';
             $action = 'manageExpenses';
             break;
-        case 'settings':
+        case 'perfil':
             $controller = 'User';
             $action = 'settings';
             break;
@@ -32,15 +28,22 @@ if (isset($_GET['url'])) {
             $controller = 'Auth';
             $action = 'logout';
             break;
-        case 'register':
+        case 'registrar':
             $controller = 'Auth';
             $action = 'register';
             break;
-        default:
+        case 'login':
             $controller = 'Auth';
             $action = 'login';
             break;
+        default:
+            $controller = 'Dashboard';
+            $action = 'index';
+            break;
     }
+} else {
+    $controller = 'Auth';
+    $action = 'login';
 }
 
 require_once "../app/controllers/{$controller}.controller.php";

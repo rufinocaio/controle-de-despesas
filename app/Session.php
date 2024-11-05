@@ -1,2 +1,4 @@
 <?php
-    session_start();
+    function startSession() {
+        session_start();
+    }
