@@ -27,9 +27,11 @@
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </td>
-                        <td class="py-2 px-4 border-b flex justify-center gap-x-2">
-                            <button onclick="openEditModal(<?php echo htmlspecialchars(json_encode($expense)); ?>)" class="text-blue-500">Editar</button>
-                            <button onclick="openDeleteModal(<?php echo htmlspecialchars($expense['id']); ?>)" class="text-red-500">Excluir</button>
+                        <td class="py-2 px-4 border-b text-center whitespace-nowrap">
+                            <div class="flex justify-center gap-x-2">
+                                <button onclick="openEditModal(<?php echo htmlspecialchars(json_encode($expense)); ?>)" class="text-blue-500">Editar</button>
+                                <button onclick="openDeleteModal(<?php echo htmlspecialchars($expense['id']); ?>)" class="text-red-500">Excluir</button>
+                            </div>
                         </td>
                     </tr>
                 <?php endforeach; ?>
