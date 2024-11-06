@@ -65,10 +65,6 @@ class ExpenseModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getAllUsers() {
-        $stmt = $this->db->query("SELECT id, name FROM users");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
 
     public function update($id, $amount, $type_id, $description, $date, $sharedWithUserIds, $participants) {
         $stmt = $this->db->prepare("UPDATE expenses SET amount = :amount, expense_type_id = :type_id, description = :description, date = :date, participants_number = :participants WHERE id = :id");

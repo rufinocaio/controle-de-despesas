@@ -7,6 +7,12 @@ class UserModel {
         $this->pdo = Database::getInstance()->getConnection();
     }
 
+    
+    public function getAllUsers() {
+        $stmt = $this->pdo->query("SELECT id, name FROM users");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function create($name, $email, $password) {
         $stmt = $this->pdo->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)");
         return $stmt->execute(['name' => $name, 'email' => $email, 'password' => $password]);

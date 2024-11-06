@@ -14,9 +14,10 @@ class ExpenseController {
     public function create() {
         AuthMiddleware::check(); 
         $expenseModel = new ExpenseModel();
+        $userModel = new UserModel();
         // Carrega os tipos de despesa para o formulário
         $expenseTypes = $expenseModel->getExpenseTypes();
-        $users = $expenseModel->getAllUsers(); // Adicione este método ao modelo para obter todos os usuários
+        $users = $userModel->getAllUsers(); // Adicione este método ao modelo para obter todos os usuários
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $amount = $_POST['amount'];
             $type_id = $_POST['type_id'];
@@ -37,12 +38,14 @@ class ExpenseController {
     public function manageExpenses() {
         AuthMiddleware::check(); // Verifica se o usuário está logado
         $expenseModel = new ExpenseModel();
+        $userModel = new UserModel();
         $expenses = $expenseModel->getAllByUserId($_SESSION['user_id']);
-        foreach ($expenses as &$expense) {
+        foreach ($expenses as $expense) {
             $expense['shared_with'] = $expenseModel->getSharedParticipants($expense['id']);
+            $updatedExpenses[] = $expense;
         }
         $expenseTypes = $expenseModel->getExpenseTypes();
-        $users = $expenseModel->getAllUsers(); // Adicione este método ao modelo para obter todos os usuários
+        $users = $userModel->getAllUsers(); // Adicione este método ao modelo para obter todos os usuários
         $view = '../app/views/Manage_Expense.php';
         require '../app/views/layout.php';
     }
@@ -52,11 +55,11 @@ class ExpenseController {
         $expenseModel = new ExpenseModel();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['EditId'];
-            $amount = $_POST['amount'];
-            $type_id = $_POST['type_id'];
-            $description = $_POST['description'];
-            $date = $_POST['date'];
-            $sharedWithUserIds = $_POST['shared_with'] ?? [];
+            $amount = $_POST['editAmount'];
+            $type_id = $_POST['editType_id'];
+            $description = $_POST['editDescription'];
+            $date = $_POST['editDate'];
+            $sharedWithUserIds = $_POST['editShared_with'] ?? [];
             $participants = count($sharedWithUserIds) + 1; // Conta o usuário atual
             $expenseModel->deleteSharedExpenses($id);
             $expenseModel->update($id, $amount, $type_id, $description, $date, $sharedWithUserIds, $participants);

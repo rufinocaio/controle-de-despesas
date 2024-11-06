@@ -13,8 +13,8 @@
             </tr>
         </thead>
         <tbody>
-            <?php if (!empty($expenses) && is_array($expenses)): ?>
-                <?php foreach ($expenses as $expense): ?>
+            <?php if (!empty($updatedExpenses) && is_array($updatedExpenses)): ?>
+                <?php foreach ($updatedExpenses as $expense): ?>
                     <tr >
                         <td class="py-2 px-4 border-b text-center whitespace-nowrap"><?php echo htmlspecialchars($expense['date']); ?></td>
                         <td class="py-2 px-4 border-b text-center whitespace-nowrap"><?php echo htmlspecialchars($expense['amount']); ?></td>
@@ -53,11 +53,11 @@
             <input type="hidden" id="EditId" name="EditId">
             <div class="mb-4">
                 <label class="block text-gray-700" for="editAmount">Valor</label>
-                <input type="number" id="amount" name="amount" class="border border-gray-300 p-2 w-full" required>
+                <input type="number" id="editAmount" name="editAmount" class="border border-gray-300 p-2 w-full" required>
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700" for="editTypeId">Tipo de Despesa</label>
-                <select id="type_id" name="type_id" class="border border-gray-300 p-2 w-full" required>
+                <select id="editType_id" name="editType_id" class="border border-gray-300 p-2 w-full" required>
                     <?php foreach ($expenseTypes as $type): ?>
                         <option value="<?php echo $type['id']; ?>"><?php echo $type['name']; ?></option>
                     <?php endforeach; ?>
@@ -65,17 +65,16 @@
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700" for="editDate">Data</label>
-                <input type="date" id="date" name="date" class="border border-gray-300 p-2 w-full" required>
+                <input type="date" id="editDate" name="editDate" class="border border-gray-300 p-2 w-full" required>
             </div>
             <div class="mb-6">
                 <label class="block text-gray-700" for="editDescription">Descrição</label>
-                <textarea id="description" name="description" class="border border-gray-300 p-2 w-full" required></textarea>
+                <textarea id="editDescription" name="editDescription" class="border border-gray-300 p-2 w-full" required></textarea>
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700" for="editSharedWith">Compartilhar com:</label>
-                <select id="shared_with" name="shared_with[]" class="border border-gray-300 p-2 w-full" multiple>
+                <select id="editShared_with" name="editShared_with[]" class="border border-gray-300 p-2 w-full" multiple>
                     <?php 
-                    $users = $expenseModel->getAllUsers();
                     foreach ($users as $user):
                         startSession(); 
                         if ($user['id'] != $_SESSION['user_id']): ?>
@@ -107,11 +106,11 @@
 <script>
     function openEditModal(expense) {
         document.getElementById('EditId').value = expense.id;
-        document.getElementById('amount').value = expense.amount;
-        document.getElementById('type_id').value = expense.type_id;
-        document.getElementById('date').value = expense.date;
-        document.getElementById('description').value = expense.description;
-        document.getElementById('shared_with').value = expense.shared_with.map(user => user.id);
+        document.getElementById('editMmount').value = expense.amount;
+        document.getElementById('editType_id').value = expense.type_id;
+        document.getElementById('editDate').value = expense.date;
+        document.getElementById('editDescription').value = expense.description;
+        document.getElementById('editShared_with').value = expense.shared_with.map(user => user.id);
         document.getElementById('editModal').classList.remove('hidden');
     }
 

@@ -26,7 +26,7 @@
                 <label class="block text-gray-700" for="shared_with">Compartilhar com:</label>
                 <select id="shared_with" name="shared_with[]" class="border border-gray-300 p-2 w-full" multiple>
                     <?php 
-                        $users = $expenseModel->getAllUsers();
+                        $users = $userModel->getAllUsers();
                         foreach ($users as $user):
                             startSession(); 
                             if ($user['id'] != $_SESSION['user_id']): ?>
