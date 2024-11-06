@@ -1,5 +1,6 @@
 <div class="bg-white p-8 rounded shadow-md w-full">
     <h2 class="text-2xl font-bold mb-6 text-center">Gerenciar Despesas</h2>
+    <div class="overflow-y-auto" style="max-height: 75vh;">
     <table class="min-w-full bg-white">
         <thead>
             <tr>
@@ -39,6 +40,7 @@
             <?php endif; ?>
         </tbody>
     </table>
+    </div>
 </div>
 
 <!-- Modal de Edição -->
