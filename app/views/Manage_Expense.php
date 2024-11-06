@@ -14,19 +14,19 @@
         <tbody>
             <?php if (!empty($expenses) && is_array($expenses)): ?>
                 <?php foreach ($expenses as $expense): ?>
-                    <tr>
-                        <td class="py-2 px-4 border-b"><?php echo htmlspecialchars($expense['date']); ?></td>
-                        <td class="py-2 px-4 border-b"><?php echo htmlspecialchars($expense['amount']); ?></td>
-                        <td class="py-2 px-4 border-b"><?php echo htmlspecialchars($expense['type_name']); ?></td>
-                        <td class="py-2 px-4 border-b"><?php echo htmlspecialchars($expense['description']); ?></td>
-                        <td class="py-2 px-4 border-b">
+                    <tr >
+                        <td class="py-2 px-4 border-b text-center whitespace-nowrap"><?php echo htmlspecialchars($expense['date']); ?></td>
+                        <td class="py-2 px-4 border-b text-center whitespace-nowrap"><?php echo htmlspecialchars($expense['amount']); ?></td>
+                        <td class="py-2 px-4 border-b text-center whitespace-nowrap"><?php echo htmlspecialchars($expense['type_name']); ?></td>
+                        <td class="py-2 px-4 border-b text-center whitespace-nowrap"><?php echo htmlspecialchars($expense['description']); ?></td>
+                        <td class="py-2 px-4 border-b text-center whitespace-nowrap">
                             <?php if (!empty($expense['shared_with']) && is_array($expense['shared_with'])): ?>
                                 <?php foreach ($expense['shared_with'] as $sharedUser): ?>
                                     <div><?php echo htmlspecialchars($sharedUser['name']); ?> (<?php echo htmlspecialchars($sharedUser['amount_due']); ?>)</div>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </td>
-                        <td class="py-2 px-4 border-b">
+                        <td class="py-2 px-4 border-b flex justify-center gap-x-2">
                             <button onclick="openEditModal(<?php echo htmlspecialchars(json_encode($expense)); ?>)" class="text-blue-500">Editar</button>
                             <button onclick="openDeleteModal(<?php echo htmlspecialchars($expense['id']); ?>)" class="text-red-500">Excluir</button>
                         </td>
