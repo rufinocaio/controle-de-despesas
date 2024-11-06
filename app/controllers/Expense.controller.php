@@ -69,7 +69,7 @@ class ExpenseController {
         }
     }
 
-    public function delete() {
+    public function deleteExpense() {
         AuthMiddleware::check(); // Verifica se o usuário está logado
         $expenseModel = new ExpenseModel();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
