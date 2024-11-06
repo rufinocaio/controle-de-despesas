@@ -78,8 +78,9 @@
                     $users = $expenseModel->getAllUsers();
                     foreach ($users as $user):
                         startSession(); 
-                        if ($user['id'] != $_SESSION['user_id'])?>
+                        if ($user['id'] != $_SESSION['user_id']): ?>
                         <option value="<?php echo $user['id']; ?>"><?php echo $user['name']; ?></option>
+                        <?php endif;?>
                     <?php endforeach; ?>
                 </select>
                 <small class="text-gray-600">Segure Ctrl (ou Cmd) para selecionar múltiplos usuários.</small>
