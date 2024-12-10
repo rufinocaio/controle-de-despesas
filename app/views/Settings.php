@@ -1,7 +1,7 @@
 <div class="flex items-center justify-center min-h-screen bg-gray-100">
     <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
         <h2 class="text-2xl font-bold mb-6 text-center">Configurações</h2>
-        <form action="/public/index.php?url=settings" method="POST">
+        <form action="/perfil" method="POST">
             <div class="mb-4">
                 <label class="block text-gray-700" for="name">Nome</label>
                 <input type="text" id="name" name="name" class="border border-gray-300 p-2 w-full" value="<?php echo $user['name']; ?>" required>

@@ -13,16 +13,21 @@
             </tr>
         </thead>
         <tbody>
-            <?php if (!empty($updatedExpenses) && is_array($updatedExpenses)): ?>
-                <?php foreach ($updatedExpenses as $expense): ?>
+            <?php
+
+use Cfurl\ControleDeDespesas\Models\ExpenseModel;
+use Cfurl\ControleDeDespesas\Models\ExpenseTypeModel;
+
+ if (!empty($expenses) && is_array($expenses)): ?>
+                <?php foreach ($expenses as $expense): ?>
                     <tr >
-                        <td class="py-2 px-4 border-b text-center whitespace-nowrap"><?php echo htmlspecialchars($expense['date']); ?></td>
-                        <td class="py-2 px-4 border-b text-center whitespace-nowrap"><?php echo htmlspecialchars($expense['amount']); ?></td>
-                        <td class="py-2 px-4 border-b text-center whitespace-nowrap"><?php echo htmlspecialchars($expense['type_name']); ?></td>
-                        <td class="py-2 px-4 border-b text-center whitespace-nowrap"><?php echo htmlspecialchars($expense['description']); ?></td>
+                        <td class="py-2 px-4 border-b text-center whitespace-nowrap"><?php echo htmlspecialchars($expense->date); ?></td>
+                        <td class="py-2 px-4 border-b text-center whitespace-nowrap"><?php echo htmlspecialchars($expense->amount); ?></td>
+                        <td class="py-2 px-4 border-b text-center whitespace-nowrap"><?php echo htmlspecialchars(ExpenseTypeModel::findById($expense->type_id)->getName()); ?></td>
+                        <td class="py-2 px-4 border-b text-center whitespace-nowrap"><?php echo htmlspecialchars($expense->description); ?></td>
                         <td class="py-2 px-4 border-b text-center whitespace-nowrap">
-                            <?php if (!empty($expense['shared_with']) && is_array($expense['shared_with'])): ?>
-                                <?php foreach ($expense['shared_with'] as $sharedUser): ?>
+                            <?php if (!empty($expense->shared_with) && is_array($expense->shared_with)): ?>
+                                <?php foreach ($expense->shared_with as $sharedUser): ?>
                                     <div><?php echo htmlspecialchars($sharedUser['name']); ?> (<?php echo htmlspecialchars($sharedUser['amount_due']); ?>)</div>
                                 <?php endforeach; ?>
                             <?php endif; ?>
@@ -30,7 +35,7 @@
                         <td class="py-2 px-4 border-b text-center whitespace-nowrap">
                             <div class="flex justify-center gap-x-2">
                                 <button onclick="openEditModal(<?php echo htmlspecialchars(json_encode($expense)); ?>)" class="text-blue-500">Editar</button>
-                                <button onclick="openDeleteModal(<?php echo htmlspecialchars($expense['id']); ?>)" class="text-red-500">Excluir</button>
+                                <button onclick="openDeleteModal(<?php echo htmlspecialchars($expense->id); ?>)" class="text-red-500">Excluir</button>
                             </div>
                         </td>
                     </tr>
@@ -53,30 +58,30 @@
             <input type="hidden" id="EditId" name="EditId">
             <div class="mb-4">
                 <label class="block text-gray-700" for="editAmount">Valor</label>
-                <input type="number" id="editAmount" name="editAmount" class="border border-gray-300 p-2 w-full" required>
+                <input type="number" id="amount" name="amount" class="border border-gray-300 p-2 w-full" required>
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700" for="editTypeId">Tipo de Despesa</label>
-                <select id="editType_id" name="editType_id" class="border border-gray-300 p-2 w-full" required>
+                <select id="type_id" name="type_id" class="border border-gray-300 p-2 w-full" required>
                     <?php foreach ($expenseTypes as $type): ?>
-                        <option value="<?php echo $type['id']; ?>"><?php echo $type['name']; ?></option>
+                        <option value="<?php echo $type->getId(); ?>"><?php echo $type->getName(); ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700" for="editDate">Data</label>
-                <input type="date" id="editDate" name="editDate" class="border border-gray-300 p-2 w-full" required>
+                <input type="date" id="date" name="date" class="border border-gray-300 p-2 w-full" required>
             </div>
             <div class="mb-6">
                 <label class="block text-gray-700" for="editDescription">Descrição</label>
-                <textarea id="editDescription" name="editDescription" class="border border-gray-300 p-2 w-full" required></textarea>
+                <textarea id="description" name="description" class="border border-gray-300 p-2 w-full" required></textarea>
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700" for="editSharedWith">Compartilhar com:</label>
-                <select id="editShared_with" name="editShared_with[]" class="border border-gray-300 p-2 w-full" multiple>
+                <select id="shared_with" name="shared_with[]" class="border border-gray-300 p-2 w-full" multiple>
                     <?php 
+                    $users = $expenseModel->getSharedWith();
                     foreach ($users as $user):
-                        startSession(); 
                         if ($user['id'] != $_SESSION['user_id']): ?>
                         <option value="<?php echo $user['id']; ?>"><?php echo $user['name']; ?></option>
                         <?php endif;?>
@@ -106,11 +111,11 @@
 <script>
     function openEditModal(expense) {
         document.getElementById('EditId').value = expense.id;
-        document.getElementById('editMmount').value = expense.amount;
-        document.getElementById('editType_id').value = expense.type_id;
-        document.getElementById('editDate').value = expense.date;
-        document.getElementById('editDescription').value = expense.description;
-        document.getElementById('editShared_with').value = expense.shared_with.map(user => user.id);
+        document.getElementById('amount').value = expense.amount;
+        document.getElementById('type_id').value = expense.type_id;
+        document.getElementById('date').value = expense.date;
+        document.getElementById('description').value = expense.description;
+        document.getElementById('shared_with').value = expense.shared_with.map(user => user.id);
         document.getElementById('editModal').classList.remove('hidden');
     }
 

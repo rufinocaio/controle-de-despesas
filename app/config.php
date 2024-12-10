@@ -4,6 +4,6 @@ return [
         'host' => 'localhost',
         'dbname' => 'controle_despesas',
         'user' => 'root',
-        'password' => '1906',
+        'password' => 'root',
     ]
 ];

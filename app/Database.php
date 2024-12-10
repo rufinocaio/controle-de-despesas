@@ -1,5 +1,9 @@
 <?php
 
+namespace Cfurl\ControleDeDespesas;
+
+use PDO, PDOException;
+
 class Database {
     private static $instance = null;
     private $pdo;

@@ -1,0 +1,16 @@
+{
+    "name": "cfurl/controle-de-despesas",
+    "license": "MIT",
+    "autoload": {
+        "classmap": ["./src"]
+    },
+    "authors": [
+        {
+            "name": "Caio Rufino",
+            "email": "caiofurlanrufinosilva@gmail.com"
+        }
+    ],
+    "require": {
+        "pecee/simple-router": "^5.4"
+    }
+}

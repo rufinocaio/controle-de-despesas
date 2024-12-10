@@ -1,6 +1,6 @@
 <div class="bg-white p-6 rounded shadow-md">
     <h1 class="text-2xl font-bold mb-4">Meus Gastos</h1>
-    <a href="/public/index.php?url=expenses/create" class="bg-blue-500 text-white py-2 px-4 rounded">Cadastrar Novo Gasto</a>
+    <a href="/adicionar-despesa" class="bg-blue-500 text-white py-2 px-4 rounded">Cadastrar Novo Gasto</a>
     
     <?php if (isset($_SESSION['success'])): ?>
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mt-4">
