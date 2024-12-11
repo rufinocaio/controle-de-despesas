@@ -1,3 +1,27 @@
+<script>
+    function openEditModal(expense) {
+        document.getElementById('EditId').value = expense.id;
+        document.getElementById('amount').value = expense.amount;
+        document.getElementById('type_id').value = expense.type_id;
+        document.getElementById('date').value = expense.date;
+        document.getElementById('description').value = expense.description;
+        document.getElementById('shared_with').value = expense.shared_with.map(user => user->id);
+        document.getElementById('editModal').classList.remove('hidden');
+    }
+
+    function closeEditModal() {
+        document.getElementById('editModal').classList.add('hidden');
+    }
+
+    function openDeleteModal(id) {
+        document.getElementById('deleteId').value = id;
+        document.getElementById('deleteModal').classList.remove('hidden');
+    }
+
+    function closeDeleteModal() {
+        document.getElementById('deleteModal').classList.add('hidden');
+    }
+</script>
 <div class="bg-white p-8 rounded shadow-md w-full">
     <h2 class="text-2xl font-bold mb-6 text-center">Gerenciar Despesas</h2>
     <div class="overflow-y-auto" style="max-height: 75vh;">
@@ -14,6 +38,8 @@
         </thead>
         <tbody>
             <?php
+
+
 
 use Cfurl\ControleDeDespesas\Models\ExpenseModel;
 use Cfurl\ControleDeDespesas\Models\ExpenseTypeModel;
@@ -35,7 +61,7 @@ use Cfurl\ControleDeDespesas\Models\ExpenseTypeModel;
                         <td class="py-2 px-4 border-b text-center whitespace-nowrap">
                             <div class="flex justify-center gap-x-2">
                                 <button onclick="openEditModal(<?php echo htmlspecialchars(json_encode($expense)); ?>)" class="text-blue-500">Editar</button>
-                                <button onclick="openDeleteModal(<?php echo htmlspecialchars($expense->id); ?>)" class="text-red-500">Excluir</button>
+                                <button onclick="openDeleteModal(<?php echo $expense->id; ?>)" class="text-red-500">Excluir</button>
                             </div>
                         </td>
                     </tr>
@@ -54,7 +80,7 @@ use Cfurl\ControleDeDespesas\Models\ExpenseTypeModel;
 <div id="editModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
     <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
         <h2 class="text-2xl font-bold mb-6 text-center">Editar Despesa</h2>
-        <form id="editForm" action="/public/index.php?url=salvar-despesa" method="POST">
+        <form id="editForm" action="/salvar-despesa" method="POST">
             <input type="hidden" id="EditId" name="EditId">
             <div class="mb-4">
                 <label class="block text-gray-700" for="editAmount">Valor</label>
@@ -82,8 +108,8 @@ use Cfurl\ControleDeDespesas\Models\ExpenseTypeModel;
                     <?php 
                     $users = $expenseModel->getSharedWith();
                     foreach ($users as $user):
-                        if ($user['id'] != $_SESSION['user_id']): ?>
-                        <option value="<?php echo $user['id']; ?>"><?php echo $user['name']; ?></option>
+                        if ($user->id != $_SESSION['user_id']): ?>
+                        <option value="<?php echo $user->id; ?>"><?php echo $user->name; ?></option>
                         <?php endif;?>
                     <?php endforeach; ?>
                 </select>
@@ -100,35 +126,10 @@ use Cfurl\ControleDeDespesas\Models\ExpenseTypeModel;
     <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
         <h2 class="text-2xl font-bold mb-6 text-center">Excluir Despesa</h2>
         <p>Tem certeza de que deseja excluir esta despesa?</p>
-        <form id="deleteForm" action="/public/index.php?url=deletar-despesa" method="POST">
+        <form id="deleteForm" action="/deletar-despesa" method="POST">
             <input type="hidden" id="deleteId" name="id">
             <button type="submit" class="w-full bg-red-500 text-white py-2 px-4 rounded">Excluir</button>
             <button type="button" onclick="closeDeleteModal()" class="w-full bg-gray-500 text-white py-2 px-4 rounded mt-2">Cancelar</button>
         </form>
     </div>
 </div>
-
-<script>
-    function openEditModal(expense) {
-        document.getElementById('EditId').value = expense.id;
-        document.getElementById('amount').value = expense.amount;
-        document.getElementById('type_id').value = expense.type_id;
-        document.getElementById('date').value = expense.date;
-        document.getElementById('description').value = expense.description;
-        document.getElementById('shared_with').value = expense.shared_with.map(user => user.id);
-        document.getElementById('editModal').classList.remove('hidden');
-    }
-
-    function closeEditModal() {
-        document.getElementById('editModal').classList.add('hidden');
-    }
-
-    function openDeleteModal(id) {
-        document.getElementById('deleteId').value = id;
-        document.getElementById('deleteModal').classList.remove('hidden');
-    }
-
-    function closeDeleteModal() {
-        document.getElementById('deleteModal').classList.add('hidden');
-    }
-</script>

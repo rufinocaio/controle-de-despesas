@@ -4,11 +4,11 @@
         <form action="/perfil" method="POST">
             <div class="mb-4">
                 <label class="block text-gray-700" for="name">Nome</label>
-                <input type="text" id="name" name="name" class="border border-gray-300 p-2 w-full" value="<?php echo $user['name']; ?>" required>
+                <input type="text" id="name" name="name" class="border border-gray-300 p-2 w-full" value="<?php echo $user->name; ?>" required>
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700" for="email">Email</label>
-                <input type="email" id="email" name="email" class="border border-gray-300 p-2 w-full" value="<?php echo $user['email']; ?>" required>
+                <input type="email" id="email" name="email" class="border border-gray-300 p-2 w-full" value="<?php echo $user->email; ?>" required>
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700" for="password">Senha</label>
